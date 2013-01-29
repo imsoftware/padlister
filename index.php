@@ -17,20 +17,10 @@ ini_set('display_errors', 1);
 ini_set('html_errors', 1);
 
 //some important information
-$pathToSqliteDB = '/var/etherpad-lite/var/pad-sqlite.db';
+$dsn = 'mysql://root:passwd@localhost/etherpad';
 
 require_once('Pad.php');
-
-/**
- * helper class for having a working sqlite3-connection
- * @see http://php.net/manual/de/sqlite3.open.php
-*/
-class DB extends SQLite3{
-	function __construct($file){
-		$this->open($file);
-	}
-}
-
+require_once 'MDB2.php';
 
 
 /**
@@ -67,20 +57,28 @@ $pads = array();
 $padKeys = array();
 
 //connection to db
-$db = new DB($pathToSqliteDB);
+$mdb2 =& MDB2::singleton($dsn);
+if (PEAR::isError($mdb2)) {
+	die($mdb2->getMessage());
+}
 
 //grab all keys from db
-$query = 'select distinct substr(store.key,5,1000) as pad from store where store.key like "pad:%"';
-$results = $db->query($query);
-while ($row = $results->fetchArray()) {
-	//have unique pad ids in array
+$results =& $mdb2->query('Select distinct substr(store.key,5,1000) as pad from store where store.key like "pad:%"');
+
+if (PEAR::isError($results)) {
+	die($res->getMessage());
+}
+
+while (($row = $results->fetchRow())) {
 	$piece = explode(':', $row[0]);
 	$padKeys[$piece[0]] = $piece[0];
 }
 
 foreach($padKeys as $key){
-	$pads[] = new Pad($key, $db);
+	$pads[] = new Pad($key, $mdb2);
 }
+
+$mdb2->disconnect();
 
 //order the pads
 usort($pads, "comp");

@@ -165,8 +165,9 @@ class Pad{
 	 */
 	private function getAuthor($authorID){
 		$query = 'select * from store where store.key = "globalAuthor:'.$authorID.'"';
-		$result = $this->db->query($query)->fetchArray();
-		$object = json_decode($result['value']);
+		$result =& $this->db->query($query);
+		$row = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
+		$object = json_decode($row['value']);
 		return $object->name;
 	}
 
