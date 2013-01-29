@@ -139,7 +139,7 @@ class Pad{
 	 */
 	private function getTime(){
 		$time = $this->getField('getLastEdited');
-		$time = substr($time, 0, strlen($time)-3);
+		$time /= 1000;
 		$time = date('d.m.Y H:i:s',$time);
 		$this->lastEdit = $time;
 	}
