@@ -129,7 +129,8 @@ class Pad{
 	 * @return JSONObject
 	 */
 	private function getField($field){
-		$json = $this->callApi($this->getFunctionNameForField($field));
+		$value = $this->getFunctionNameForField($field);
+		$json = $this->callApi($field);
 		return $json->data->{$value};
 	}
 
