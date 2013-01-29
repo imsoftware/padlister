@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  *	VisonoPadLister
  *	_______________
@@ -66,7 +66,7 @@ if (PEAR::isError($mdb2)) {
 $results =& $mdb2->query('Select distinct substr(store.key,5,1000) as pad from store where store.key like "pad:%"');
 
 if (PEAR::isError($results)) {
-	die($res->getMessage());
+	die($results->getMessage());
 }
 
 while (($row = $results->fetchRow())) {
@@ -102,9 +102,9 @@ usort($pads, "comp");
 		</p>
 		<p id="order">
 			Sortieren: 
-			<a href="<? $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'] ?>?order=num">letzte Änderung</a> | 
-			<a href="<? $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'] ?>?order=alpha">alphabetisch</a> | 
-			<a href="<? $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'] ?>?order=user">aktive User</a>
+			<a href="<?php $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'] ?>?order=num">letzte Änderung</a> | 
+			<a href="<?php $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'] ?>?order=alpha">alphabetisch</a> | 
+			<a href="<?php $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'] ?>?order=user">aktive User</a>
 		</p>
 		<table>
 			<tr>
@@ -115,35 +115,35 @@ usort($pads, "comp");
 				<th>Revisionen</th>
 				<th>Tools</th>
 			</tr>
-			<? foreach($pads as $pad): ?>
-				<tr id="tr<?= $pad->id ?>">
+			<?php foreach($pads as $pad): ?>
+				<tr id="tr<?php $pad->id ?>">
 					<td>
-						<a href="<?= $pad->viewUrl ?>" target="_blank"><?= $pad->id ?></a>
+						<a href="<?php $pad->viewUrl ?>" target="_blank"><?php $pad->id ?></a>
 					</td>
 					<td>
-						<?= $pad->lastEdit ?>
+						<?php $pad->lastEdit ?>
 					</td>
 					<td>
-						<?= $pad->authorsCount ?>
+						<?php $pad->authorsCount ?>
 					</td>
 					<td>
 						<ul>
-							<? foreach($pad->authors as $author): ?>
-								<li><?= $author ?></li>
-							<? endforeach ?>
+							<?php foreach($pad->authors as $author): ?>
+								<li><?php $author ?></li>
+							<?php endforeach ?>
 		
 						</ul>
 					</td>
 					<td>
-						<?= $pad->revisions ?>
+						<?php $pad->revisions ?>
 					</td>
 					<td>
-						<a name="<?= $pad ?>" title='Pad "<?= $pad ?>" löschen' class="deletor" href="<?= $pad->deleteUrl ?>"> 
+						<a name="<?php $pad ?>" title='Pad "<?php $pad ?>" löschen' class="deletor" href="<?php $pad->deleteUrl ?>"> 
 							<img src="trash.png" alt="[X]" />
 						</a>
 					</td>
 				</tr>
-			<? endforeach ?>
+			<?php endforeach ?>
 		</table>
 	</body>
 </html>

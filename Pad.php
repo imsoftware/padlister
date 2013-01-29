@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * wrapper for a single pad
  * 
@@ -187,3 +187,4 @@ class Pad{
 		$this->authors = $authors;
 	}
 }
+?>
